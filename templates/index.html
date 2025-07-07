@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Tourist Attractions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+    <script src="/static/scripts.js"></script>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+
+<body class="gradient-background">
+    <div class="px-4 py-5 my-5 text-center">
+        <img class="d-block mx-auto mb-4" src="/static/images/tour-guide128px.png" alt="" width="72" height="57">
+        <h1 class="display-5 fw-bold">Tourist Attractions</h1>
+        <div class="col-lg-6 mx-auto">
+            <div class="lead mb-4"> <select id="cities" onchange="citySelect(this)">
+                    <option value="select">Select city</option>
+                    {% for c in cities %}
+                    <option value="Helsinki">{{c}}</option>
+            </div>
+            {%endfor%}
+            </select>
+            <input hidden type="text" id="streetAddress" name="streetAddress" placeholder="STREET ADDRESS">
+            <button type="button" class="btn btn-primary">Show</button>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <!--funktion kutstu joka 5 sekunti-->
+                <script> var changeInterval=setInterval(changeCityName, 5000)</script>
+              
+                <p id="cityName"></p>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="stopSwitching" onchange="stopCityChange(document.getElementById('stopSwitching'))">
+                    <label class="form-check-label" for="flexCheckDefault" >
+                        Stop automatic switching
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
