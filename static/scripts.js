@@ -17,7 +17,7 @@ var i = 0;
 //kuin cities listan pituus, jolloin i arvo nollaantuu
 function changeCityName() {
     var cities = ['Helsinki', 'Seinäjoki', 'Tampere', 'Oulu']
-    document.getElementById("cityName").innerText = "Unique places in "+ cities[i]
+    document.getElementById("cityName").innerText = "Unique places in "+cities[i]
     i=i+1;
     if (i===cities.length)
     {

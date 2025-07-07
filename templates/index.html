@@ -12,34 +12,63 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 
-<body class="gradient-background">
-    <div class="px-4 py-5 my-5 text-center">
-        <img class="d-block mx-auto mb-4" src="/static/images/tour-guide128px.png" alt="" width="72" height="57">
-        <h1 class="display-5 fw-bold">Tourist Attractions</h1>
-        <div class="col-lg-6 mx-auto">
-            <div class="lead mb-4"> <select id="cities" onchange="citySelect(this)">
-                    <option value="select">Select city</option>
-                    {% for c in cities %}
-                    <option value="Helsinki">{{c}}</option>
-            </div>
-            {%endfor%}
-            </select>
-            <input hidden type="text" id="streetAddress" name="streetAddress" placeholder="STREET ADDRESS">
-            <button type="button" class="btn btn-primary">Show</button>
-            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                <!--funktion kutstu joka 5 sekunti-->
-                <script> var changeInterval=setInterval(changeCityName, 5000)</script>
-              
-                <p id="cityName"></p>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="stopSwitching" onchange="stopCityChange(document.getElementById('stopSwitching'))">
-                    <label class="form-check-label" for="flexCheckDefault" >
-                        Stop automatic switching
-                    </label>
+<body>
+    <section class="gradient-background">
+        <div class="px-4 py-5 my-5 text-center">
+            <img class="d-block mx-auto mb-4" src="/static/images/tour-guide128px.png" alt="" width="72" height="57">
+            <p id="cityName"></p>
+            <h1 class="display-5 fw-bold">Tourist Attractions</h1>
+            <div class="col-lg-6 mx-auto">
+
+
+                <div class="lead mb-4">
+                    <form action="{{ url_for('showAttractions')}}" method="post">
+                        <select id="cities" name="cities" onchange="citySelect(this)">
+                        <option value="select">Select city</option>
+                        {% for c in cities %}
+                        <option value="Helsinki">{{c}}</option>
+                </div>
+                {%endfor%}
+                </select>
+
+                <button type="submit" class="btn btn-primary">Show</button>
+                </form>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <!--funktion kutstu joka 5 sekunti-->
+                    <script> var changeInterval = setInterval(changeCityName, 5000)
+                    </script>
+
+
+                    <div class="form-check">
+                        <label class="form-check-label" for="flexCheckDefault">Stop automatic switching</label>
+                        <input class="form-check-input" type="checkbox" value="" id="stopSwitching"
+                            onchange="stopCityChange(document.getElementById('stopSwitching'))">
+
+                    </div>
+                    <br>
+
                 </div>
             </div>
+
         </div>
+    </section>
+    <div class="px-4 py-5 my-5 text-center">
+        <input hidden type="text" id="streetAddress" name="streetAddress" placeholder="STREET ADDRESS">
+        <section>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown button
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </div>
     </div>
+    </section>
+    <div class="b-example-divider"></div>
 
 </body>
 
