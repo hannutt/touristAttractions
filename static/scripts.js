@@ -4,9 +4,11 @@ function citySelect(sel) {
     console.log(output)
     if (output != "Select city") {
         document.getElementById("streetAddress").hidden = false
+        document.getElementById("autoCompleteCB").hidden=false
     }
     if (output === "Select city") {
         document.getElementById("streetAddress").hidden = true
+        document.getElementById("autoCompleteCB").hidden=true
 
     }
 }
@@ -39,12 +41,10 @@ function stopCityChange(cb) {
         changeInterval=setInterval(changeCityName, 5000)
 
     }
-    
-
-    
 }
-
-
+ var auto = false
+function setAutoComplete(cb) {
+}
 
 
 
