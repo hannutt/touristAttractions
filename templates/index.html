@@ -31,10 +31,14 @@
 
                 <div class="lead mb-4">
                     <form action="{{ url_for('showAttractions')}}" method="post">
-                         <div>
-                            <input hidden type="text" id="streetAddress" name="streetAddress"
-                                placeholder="STREET ADDRESS">
+                        <div id="inputDiv" hidden>
+                            <!--div tässä asettaa inputit allekkain-->
+                            <div>
+                                <input type="text" id="streetAddress" name="streetAddress" placeholder="FROM ADDRESS">
+                            </div>
+                            <input type="text" id="destination" name="destination" placeholder="TO">
                         </div>
+                        <br>
                         <select id="cities" name="cities" onchange="citySelect(this)">
                             <option value="select">Select city</option>
                             {% for c in cities %}
@@ -42,6 +46,7 @@
                 </div>
                 {%endfor%}
                 </select>
+            
 
                 <button type="submit" class="btn btn-primary">Show</button>
                 </form>
@@ -52,7 +57,7 @@
 
 
                     <div class="lead mb-4">
-                       
+
 
                         <div class="form-check">
                             <label class="form-check-label" for="flexCheckDefault">Stop automatic switching</label>
@@ -74,27 +79,12 @@
         </div>
     </section>
     <div class="px-4 py-5 my-5 text-center">
-        <script>
-            $(function () {
-                //jquery get hakee tiedoston sisällön
-                jQuery.get('/static/hki_kadut.txt', function (data) {
-                    //autocompelete toimii siten että source on listamuodossa
-                    //streetlist jakaa rivinvaihdon kohdalta splitin avulla jokaisen kadun
-                    //omaksi listaelementiksi.
-                    var streetList = data.split("\n")
-                    $("#streetAddress").autocomplete({
-                        source: streetList
-                    });
-
-                });
-
-            });
-        </script>
 
         <section>
             <div class="flex-container">
                 <div class="card" style="width: 18rem;">
-                    <img src="/static/images/pexelsTouristSmall.jpg" class="card-img-top" alt="tourist and eiffel tower">
+                    <img src="/static/images/pexelsTouristSmall.jpg" class="card-img-top"
+                        alt="tourist and eiffel tower">
                     <div class="card-body">
                         {% for d in data %}
                         <h5 class="card-title">{{d.attractName}}</h5>
@@ -117,7 +107,7 @@
             </div>-->
             </div>
         </section>
-       
+
 
 </body>
 

@@ -19,7 +19,7 @@ def connectDB():
 
 @app.route('/')
 def start():
-     cities=['Helsinki','Tampere','Seinäjoki','Oulu']
+     cities=['Helsinki','Tampere','Vaasa','Oulu']
      return render_template('index.html',cities=cities)
 
 @app.route("/showAttractions", methods=['POST','GET'])
