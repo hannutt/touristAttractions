@@ -31,6 +31,10 @@
 
                 <div class="lead mb-4">
                     <form action="{{ url_for('showAttractions')}}" method="post">
+                         <div>
+                            <input hidden type="text" id="streetAddress" name="streetAddress"
+                                placeholder="STREET ADDRESS">
+                        </div>
                         <select id="cities" name="cities" onchange="citySelect(this)">
                             <option value="select">Select city</option>
                             {% for c in cities %}
@@ -48,10 +52,7 @@
 
 
                     <div class="lead mb-4">
-                        <div>
-                            <input hidden type="text" id="streetAddress" name="streetAddress"
-                                placeholder="STREET ADDRESS">
-                        </div>
+                       
 
                         <div class="form-check">
                             <label class="form-check-label" for="flexCheckDefault">Stop automatic switching</label>
@@ -74,9 +75,6 @@
     </section>
     <div class="px-4 py-5 my-5 text-center">
         <script>
-
-
-
             $(function () {
                 //jquery get hakee tiedoston sisällön
                 jQuery.get('/static/hki_kadut.txt', function (data) {
@@ -91,17 +89,21 @@
                 });
 
             });
-
-
-
-
-
-
-
         </script>
 
         <section>
-            <!--<div class="dropdown">
+            <div class="flex-container">
+                <div class="card" style="width: 18rem;">
+                    <img src="/static/images/pexelsTouristSmall.jpg" class="card-img-top" alt="tourist and eiffel tower">
+                    <div class="card-body">
+                        {% for d in data %}
+                        <h5 class="card-title">{{d.attractName}}</h5>
+                        {%endfor%}
+                        <p class="card-text">Distance from {{street}} {{distance}}</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+                <!--<div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Dropdown button
@@ -113,9 +115,9 @@
                     <a class="dropdown-item" href="#">Something else here</a>
                 </div>
             </div>-->
-    </div>
-    </section>
-    <div class="b-example-divider"></div>
+            </div>
+        </section>
+       
 
 </body>
 

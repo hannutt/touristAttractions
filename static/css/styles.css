@@ -15,3 +15,12 @@
     background-position: 0% 50%;
   }
 }
+ .flex-container {
+      /*align-items toimii vain jos height on määritelty*/
+      height: 100vh;
+      display: flex;
+      /*keskitys vaakasuunnassa*/
+      justify-content: center;
+      /*keskitys pystysuunnassa*/
+      align-items: center;
+    }
