@@ -28,6 +28,9 @@ def showAttractions():
     #käyttäjän valitsema kaupunki
     city=request.form['cities']
     city=city.lower()
+    destination=request.form['destination']
+  
+  
     #käyttäjän syöte
     street=request.form['streetAddress']
     fullAddress=city+","+street
@@ -37,24 +40,40 @@ def showAttractions():
     #disticnt metodilla haetaan vain kentän nimen jälkeinen arvo, jossa attract name on mannerheim statue
     #vrt sql where
   
-    latitude=collection.distinct('attractLat',{"attractName":"Mannerheim Statue"})
-    longitude=collection.distinct('attractLon',{"attractName":"Mannerheim Statue"})
+    destinationLatitude=collection.distinct('attractLat',{"attractName":destination})
+    destinationLongitude=collection.distinct('attractLon',{"attractName":destination})
+    attractionImageUrl=collection.distinct('attractImage',{'attractName':destination})
+    attractionName=collection.distinct('attractName',{"attractName":destination})
     geolocator = Nominatim(user_agent="GetLoc")
     #paikannetaan käyttäjä, fullAdress on kaupunki + syötetty osoite
     location = geolocator.geocode(fullAddress)
     myLat=location.latitude
     myLong=location.longitude
     myLocation=(myLat,myLong)
-    latFloat=float(latitude[0])
-    longFloat=float(longitude[0])
+    latFloat=float(destinationLatitude[0])
+    longFloat=float(destinationLongitude[0])
+    imgUrl=attractionImageUrl[0]
    
     attractionLocation=(latFloat,longFloat)
+    #lasketaan etäisyys käyttäjän antaman kaupungin ja kadun + nähtävyyden välillä
     distance=haversine(myLocation,attractionLocation)
     distance=round(distance,2)
-    result=collection.find()
-    for r in result:
-        data.append(r)
-    return render_template('index.html',data=data,distance=distance,street=street)
+    #aika-arvio kävellen
+   
+    walktime=distance/5
+    biketime=distance/15
+    
+#muunnetaan distance/5 tulos tunneiksi,minuuteiksi ja sekunneiksi
+    hours = int(walktime)
+    minutes = (walktime*60) % 60
+    seconds = (walktime*3600) % 60
+    estTravelTimeWalk="%d:%02d.%02d" % (hours, minutes, seconds)
+    hours = int(biketime)
+    minutes = (biketime*60) % 60
+    seconds = (biketime*3600) % 60
+    estTravelTimeBike="%d:%02d.%02d" % (hours, minutes, seconds)
+    
+    return render_template('index.html',distance=distance,street=street,estTravelTimeWalk=estTravelTimeWalk,estTravelTimeBike=estTravelTimeBike,latFloat=latFloat,longFloat=longFloat,imgUrl=imgUrl,attractionName=attractionName)
 
 
 if __name__ == '__main__':

@@ -16,6 +16,10 @@
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"></script>
     <script src="/static/scripts.js"></script>
+     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
@@ -83,28 +87,22 @@
         <section>
             <div class="flex-container">
                 <div class="card" style="width: 18rem;">
-                    <img src="/static/images/pexelsTouristSmall.jpg" class="card-img-top"
+                    <!--imgUrl on mongo tietokannasta haettu kuvan url osoite-->
+                    <img src={{imgUrl}} class="card-img-top"
                         alt="tourist and eiffel tower">
                     <div class="card-body">
-                        {% for d in data %}
-                        <h5 class="card-title">{{d.attractName}}</h5>
-                        {%endfor%}
-                        <p class="card-text">Distance from {{street}} {{distance}}</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                     
+                        <h5 class="card-title">{{attractionName}}</h5>
+                        
+                        <p class="card-text">Distance from {{street}} {{distance}} Km </p>
+                        <p class="card-text">Est. travel time by walking {{estTravelTimeWalk}}</p>
+                        <p class="card-text">Est. travel time by bike {{estTravelTimeBike}}</p>
+                        <p hidden class="card-text"id="latValue">{{latFloat}}</p>  <p hidden id="lonValue" class="card-text">{{longFloat}}</p>
+                        <button class="btn btn-primary" onclick="createMap(document.getElementById('latValue').innerText,document.getElementById('lonValue').innerText)">Show in map</button>
+                         <div id="map"></div>
                     </div>
                 </div>
-                <!--<div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown button
-                </button>
-                
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-            </div>-->
+         
             </div>
         </section>
 

@@ -24,3 +24,6 @@
       /*keskitys pystysuunnassa*/
       align-items: center;
     }
+    #map {
+      height: 180px
+    }

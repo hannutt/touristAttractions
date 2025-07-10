@@ -68,7 +68,7 @@ $(document).ready(function () {
     $(function () {
         
         //jquery get hakee tiedoston sisällön
-        jQuery.get('/static/'+finalOuput+'.txt', function (data) {
+        jQuery.get('/static/Helsinki.txt', function (data) {
             //autocompelete toimii siten että source on listamuodossa
             //streetlist jakaa rivinvaihdon kohdalta splitin avulla jokaisen kadun
             //omaksi listaelementiksi.
@@ -81,5 +81,13 @@ $(document).ready(function () {
 
     });
 });
+
+function createMap(lat,lon) {
+var map = L.map('map').setView([lat,lon], 13);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+}
 
 
