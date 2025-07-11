@@ -6,9 +6,9 @@ function citySelect(sel) {
     if (output != "Select city") {
         document.getElementById("inputDiv").hidden = false
         document.getElementById("autoCompleteCB").hidden = false
-       //palautetaan output, että sitä voidaan käyttää jquery funktissa.
-       
-     
+        //palautetaan output, että sitä voidaan käyttää jquery funktissa.
+
+
 
     }
     if (output === "Select city") {
@@ -44,50 +44,85 @@ function stopCityChange(cb) {
 
     }
 }
-var auto = false
+
 function setAutoComplete(cb) {
-}
+    if (cb.checked) {
+        document.getElementById("streetAddress").hidden=false
+        document.getElementById("streetAddress2").hidden=true
+        useAutoComplete(cb.checked)
+    }
+    if (cb.checked === false) {
+        document.getElementById("streetAddress").hidden=true
+        document.getElementById("streetAddress2").hidden=false
+    }
+    }
 
-$(document).ready(function () {
 
-    $(function () {
+    function useAutoComplete(cbval) {
+        console.log(cbval)
+        if (cbval) {
+            $(document).ready(function () {
 
-        //jquery get hakee tiedoston sisällön
-        jQuery.get('/static/hki_kadut.txt', function (data) {
-            //autocompelete toimii siten että source on listamuodossa
-            //streetlist jakaa rivinvaihdon kohdalta splitin avulla jokaisen kadun
-            //omaksi listaelementiksi.
-            var streetList = data.split("\n")
-            $("#streetAddress").autocomplete({
-                source: streetList
+                $(function () {
+
+                    //jquery get hakee tiedoston sisällön
+                    jQuery.get('/static/hki_kadut.txt', function (data) {
+                        //autocompelete toimii siten että source on listamuodossa
+                        //streetlist jakaa rivinvaihdon kohdalta splitin avulla jokaisen kadun
+                        //omaksi listaelementiksi.
+                        var streetList = data.split("\n")
+                        $("#streetAddress").autocomplete({
+                            source: streetList
+                        });
+
+                    });
+
+                });
+                $(function () {
+
+                    //jquery get hakee tiedoston sisällön
+                    jQuery.get('/static/Helsinki.txt', function (data) {
+                        //autocompelete toimii siten että source on listamuodossa
+                        //streetlist jakaa rivinvaihdon kohdalta splitin avulla jokaisen kadun
+                        //omaksi listaelementiksi.
+                        var attractionList = data.split("\n")
+                        $("#destination").autocomplete({
+                            source: attractionList
+                        });
+
+                    });
+
+                });
             });
 
-        });
+        }
 
-    });
-    $(function () {
-        
-        //jquery get hakee tiedoston sisällön
-        jQuery.get('/static/Helsinki.txt', function (data) {
-            //autocompelete toimii siten että source on listamuodossa
-            //streetlist jakaa rivinvaihdon kohdalta splitin avulla jokaisen kadun
-            //omaksi listaelementiksi.
-            var attractionList = data.split("\n")
-            $("#destination").autocomplete({
-                source: attractionList
-            });
+    }
 
-        });
 
-    });
-});
 
-function createMap(lat,lon) {
-var map = L.map('map').setView([lat,lon], 13);
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+function createMap(lat, lon) {
+
+    var map = L.map('map').setView([lat, lon], 18);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
 }
+
+//puheentunnistus, puhe muutetaan tekstiksi ja teksti sijoitetaan streetAddress input kenttään.
+function runSpeechRecog() {
+    var fromStreet = document.getElementById("streetAddress")
+    let recognization = new webkitSpeechRecognition();
+    recognization.onstart = () => {
+
+    }
+    recognization.onresult = (e) => {
+        var transcript = e.results[0][0].transcript;
+        fromStreet.value = transcript;
+    }
+    recognization.start();
+}
+
 
 

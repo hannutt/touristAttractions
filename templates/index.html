@@ -16,7 +16,7 @@
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"></script>
     <script src="/static/scripts.js"></script>
-     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
@@ -37,9 +37,17 @@
                     <form action="{{ url_for('showAttractions')}}" method="post">
                         <div id="inputDiv" hidden>
                             <!--div tässä asettaa inputit allekkain-->
-                            <div>
-                                <input type="text" id="streetAddress" name="streetAddress" placeholder="FROM ADDRESS">
-                            </div>
+                            <!--col-sm-5 info-input" luokalla saa syötekentän ja kuvakkeen siten
+                            että ensin tulee kenttä, sitten kuvake-->
+                            <input class="col-sm-5 info-input" type="text" id="streetAddress" name="streetAddress"
+                                placeholder="FROM ADDRESS">
+                              <input hidden class="col-sm-5 info-input" type="text" id="streetAddress2" name="streetAddress"
+                                placeholder="FROM ADDRESS">
+                            <span id="microphoneBtn"><img src="/static/images/microphone24px.png"></span>
+                            <script>
+                                document.getElementById("microphoneBtn").addEventListener("click", runSpeechRecog)
+                            </script>
+
                             <input type="text" id="destination" name="destination" placeholder="TO">
                         </div>
                         <br>
@@ -50,7 +58,7 @@
                 </div>
                 {%endfor%}
                 </select>
-            
+
 
                 <button type="submit" class="btn btn-primary">Show</button>
                 </form>
@@ -72,7 +80,7 @@
                         <div class="form-check" id="autoCompleteCB" hidden>
                             <label class="form-check-label" for="autocompelete">Use jQuery autocomplete</label>
                             <input class="form-check-input" type="checkbox" value="" id="autocomplete"
-                                onchange="setAutoComplete(document.getElementById('autocompelete'))">
+                                onchange="setAutoComplete(document.getElementById('autocomplete'))">
 
                         </div>
                     </div>
@@ -81,6 +89,7 @@
             </div>
 
         </div>
+        <p></p>
     </section>
     <div class="px-4 py-5 my-5 text-center">
 
@@ -88,21 +97,24 @@
             <div class="flex-container">
                 <div class="card" style="width: 18rem;">
                     <!--imgUrl on mongo tietokannasta haettu kuvan url osoite-->
-                    <img src={{imgUrl}} class="card-img-top"
-                        alt="tourist and eiffel tower">
+                    <img src={{imgUrl}} class="card-img-top" alt="tourist and eiffel tower">
                     <div class="card-body">
-                     
+
                         <h5 class="card-title">{{attractionName}}</h5>
-                        
+                        <p hidden class="card-text" id="userLat">{{myLat}}</p>
+                        <p hidden class="card-text" id="userLon">{{myLong}}</p>
                         <p class="card-text">Distance from {{street}} {{distance}} Km </p>
                         <p class="card-text">Est. travel time by walking {{estTravelTimeWalk}}</p>
                         <p class="card-text">Est. travel time by bike {{estTravelTimeBike}}</p>
-                        <p hidden class="card-text"id="latValue">{{latFloat}}</p>  <p hidden id="lonValue" class="card-text">{{longFloat}}</p>
-                        <button class="btn btn-primary" onclick="createMap(document.getElementById('latValue').innerText,document.getElementById('lonValue').innerText)">Show in map</button>
-                         <div id="map"></div>
+                        <p hidden class="card-text" id="latValue">{{latFloat}}</p>
+                        <p hidden id="lonValue" class="card-text">{{longFloat}}</p>
+                        <button class="btn btn-primary"
+                            onclick="createMap(document.getElementById('latValue').innerText,document.getElementById('lonValue').innerText)">Show
+                            in map</button>
+                        <div id="map"></div>
                     </div>
                 </div>
-         
+
             </div>
         </section>
 

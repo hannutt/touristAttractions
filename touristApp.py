@@ -73,7 +73,8 @@ def showAttractions():
     seconds = (biketime*3600) % 60
     estTravelTimeBike="%d:%02d.%02d" % (hours, minutes, seconds)
     
-    return render_template('index.html',distance=distance,street=street,estTravelTimeWalk=estTravelTimeWalk,estTravelTimeBike=estTravelTimeBike,latFloat=latFloat,longFloat=longFloat,imgUrl=imgUrl,attractionName=attractionName)
+    return render_template('index.html',distance=distance,street=street,estTravelTimeWalk=estTravelTimeWalk,estTravelTimeBike=estTravelTimeBike,latFloat=latFloat,longFloat=longFloat,imgUrl=imgUrl,attractionName=attractionName,
+                           myLat=myLat,myLong=myLong)
 
 
 if __name__ == '__main__':
