@@ -1,12 +1,11 @@
 
 function citySelect(sel) {
-
-    var output = document.getElementById("cities").value = sel.options[sel.selectedIndex].text
-    console.log(output)
+    // output on globaali muuttuja, koska siitä puuttuu var
+    output = document.getElementById("cities").value = sel.options[sel.selectedIndex].text
     if (output != "Select city") {
         document.getElementById("inputDiv").hidden = false
         document.getElementById("autoCompleteCB").hidden = false
-        //palautetaan output, että sitä voidaan käyttää jquery funktissa.
+       
 
 
 
@@ -47,11 +46,13 @@ function stopCityChange(cb) {
 
 function setAutoComplete(cb) {
     if (cb.checked) {
+        document.getElementById("jqueryAC").innerText="Stop Autocomplete"
         document.getElementById("streetAddress").hidden=false
         document.getElementById("streetAddress2").hidden=true
         useAutoComplete(cb.checked)
     }
     if (cb.checked === false) {
+        document.getElementById("jqueryAC").innerText="Use Autocomplete"
         document.getElementById("streetAddress").hidden=true
         document.getElementById("streetAddress2").hidden=false
     }
@@ -59,14 +60,16 @@ function setAutoComplete(cb) {
 
 
     function useAutoComplete(cbval) {
-        console.log(cbval)
+
+        
         if (cbval) {
+            
             $(document).ready(function () {
 
                 $(function () {
 
                     //jquery get hakee tiedoston sisällön
-                    jQuery.get('/static/hki_kadut.txt', function (data) {
+                    jQuery.get('/static/streets/'+output+"Kadut.txt", function (data) {
                         //autocompelete toimii siten että source on listamuodossa
                         //streetlist jakaa rivinvaihdon kohdalta splitin avulla jokaisen kadun
                         //omaksi listaelementiksi.
@@ -81,7 +84,7 @@ function setAutoComplete(cb) {
                 $(function () {
 
                     //jquery get hakee tiedoston sisällön
-                    jQuery.get('/static/Helsinki.txt', function (data) {
+                    jQuery.get('/static/streets/'+output+'Paikat.txt', function (data) {
                         //autocompelete toimii siten että source on listamuodossa
                         //streetlist jakaa rivinvaihdon kohdalta splitin avulla jokaisen kadun
                         //omaksi listaelementiksi.
