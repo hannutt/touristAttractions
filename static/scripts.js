@@ -5,7 +5,7 @@ function citySelect(sel) {
     if (output != "Select city") {
         document.getElementById("inputDiv").hidden = false
         document.getElementById("autoCompleteCB").hidden = false
-       
+
 
 
 
@@ -45,62 +45,68 @@ function stopCityChange(cb) {
 }
 
 function setAutoComplete(cb) {
+
     if (cb.checked) {
-        document.getElementById("jqueryAC").innerText="Stop Autocomplete"
-        document.getElementById("streetAddress").hidden=false
-        document.getElementById("streetAddress2").hidden=true
+        document.getElementById("jqueryAC").innerText = "Stop Autocomplete"
         useAutoComplete(cb.checked)
     }
     if (cb.checked === false) {
-        document.getElementById("jqueryAC").innerText="Use Autocomplete"
-        document.getElementById("streetAddress").hidden=true
-        document.getElementById("streetAddress2").hidden=false
+        document.getElementById("jqueryAC").innerText = "Use Autocomplete"
+        useAutoComplete(cb.checked)
+
     }
+}
+
+
+function useAutoComplete(cbval) {
+
+    //poistaa autocompleten käytöstä.
+    if (cbval === false) {
+        $("#streetAddress").autocomplete({
+            disabled: true
+        });
+
     }
 
+    if (cbval) {
 
-    function useAutoComplete(cbval) {
+        $(document).ready(function () {
 
-        
-        if (cbval) {
-            
-            $(document).ready(function () {
+            $(function () {
 
-                $(function () {
-
-                    //jquery get hakee tiedoston sisällön
-                    jQuery.get('/static/streets/'+output+"Kadut.txt", function (data) {
-                        //autocompelete toimii siten että source on listamuodossa
-                        //streetlist jakaa rivinvaihdon kohdalta splitin avulla jokaisen kadun
-                        //omaksi listaelementiksi.
-                        var streetList = data.split("\n")
-                        $("#streetAddress").autocomplete({
-                            source: streetList
-                        });
-
+                //jquery get hakee tiedoston sisällön
+                jQuery.get('/static/streets/' + output + "Kadut.txt", function (data) {
+                    //autocompelete toimii siten että source on listamuodossa
+                    //streetlist jakaa rivinvaihdon kohdalta splitin avulla jokaisen kadun
+                    //omaksi listaelementiksi.
+                    var streetList = data.split("\n")
+                    $("#streetAddress").autocomplete({
+                        source: streetList
                     });
 
                 });
-                $(function () {
 
-                    //jquery get hakee tiedoston sisällön
-                    jQuery.get('/static/streets/'+output+'Paikat.txt', function (data) {
-                        //autocompelete toimii siten että source on listamuodossa
-                        //streetlist jakaa rivinvaihdon kohdalta splitin avulla jokaisen kadun
-                        //omaksi listaelementiksi.
-                        var attractionList = data.split("\n")
-                        $("#destination").autocomplete({
-                            source: attractionList
-                        });
-
-                    });
-
-                });
             });
+            $(function () {
 
-        }
+                //jquery get hakee tiedoston sisällön
+                jQuery.get('/static/streets/' + output + 'Paikat.txt', function (data) {
+                    //autocompelete toimii siten että source on listamuodossa
+                    //streetlist jakaa rivinvaihdon kohdalta splitin avulla jokaisen kadun
+                    //omaksi listaelementiksi.
+                    var attractionList = data.split("\n")
+                    $("#destination").autocomplete({
+                        source: attractionList
+                    });
+
+                });
+
+            });
+        });
 
     }
+
+}
 
 
 

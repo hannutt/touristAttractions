@@ -24,7 +24,7 @@ def start():
 
 @app.route("/showAttractions", methods=['POST','GET'])
 def showAttractions():
-    data=[]
+    
     #käyttäjän valitsema kaupunki
     city=request.form['cities']
     city=city.lower()

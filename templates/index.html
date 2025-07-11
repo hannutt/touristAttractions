@@ -28,29 +28,31 @@
     <section class="gradient-background">
         <div class="px-4 py-5 my-5 text-center">
             <img class="d-block mx-auto mb-4" src="/static/images/tour-guide128px.png" alt="" width="72" height="57">
-            <p id="cityName"></p>
+
             <h1 class="display-5 fw-bold">Tourist Attractions</h1>
             <div class="col-lg-6 mx-auto">
 
+                <div class="lead mb-4">
+                    <label class="form-check-label" for="currentLoc">Use current location</label>
+                    <input class="form-check-input" type="checkbox" value="" id="currentLoc">
+                </div>
 
                 <div class="lead mb-4">
                     <form action="{{ url_for('showAttractions')}}" method="post">
                         <div id="inputDiv" hidden>
                             <!--div tässä asettaa inputit allekkain-->
-                            <!--col-sm-5 info-input" luokalla saa syötekentän ja kuvakkeen siten
-                            että ensin tulee kenttä, sitten kuvake-->
-                            <input class="col-sm-5 info-input" type="text" id="streetAddress" name="streetAddress"
-                                placeholder="FROM ADDRESS">
-                              <input hidden class="col-sm-5 info-input" type="text" id="streetAddress2" name="streetAddress"
-                                placeholder="FROM ADDRESS">
-                            <span id="microphoneBtn"><img src="/static/images/microphone24px.png"></span>
-                            <script>
-                                document.getElementById("microphoneBtn").addEventListener("click", runSpeechRecog)
-                            </script>
-
+                            <div>
+                                <input type="text" id="streetAddress" name="streetAddress" placeholder="FROM ADDRESS">
+                            </div>
                             <input type="text" id="destination" name="destination" placeholder="TO">
                         </div>
-                        <br>
+                        <div id="inputDiv" class="lead mb-4">
+                            <span id="microphoneBtn"><img src="/static/images/microphone24px.png"></span>
+                        </div>
+                        <script>
+                            document.getElementById("microphoneBtn").addEventListener("click", runSpeechRecog)
+                        </script>
+
                         <select id="cities" name="cities" onchange="citySelect(this)">
                             <option value="select">Select city</option>
                             {% for c in cities %}

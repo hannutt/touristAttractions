@@ -9,7 +9,7 @@ The main idea of ​​the application is to provide information about tourist d
 
 AUTOCOMPLETE TEXT
 
-The application uses external text files that contain all the street names of the cities of Helsinki and Vaasa, as well as the street addresses of attractions in these cities. The user can use jQuery autocomplete when typing their own street address and the street address of the attraction. The application selects the correct text file based on the input provided by the user.
+The application uses external text files that contain all the street names of the cities of Helsinki and Vaasa, as well as the street addresses of attractions in these cities. The user can use jQuery autocomplete when typing their own street address and the street address of the attraction. The application selects the correct text file based on the user's input and reads its contents using the jQuery Get method.
 
 Autocomplete is activated by clicking the "use jQuery autocomplete" checkbox. After clicking, the contents of the file are retrieved using the jQuery Get method, after which the contents are stored in a JavaScript array and the array is passed as a parameter to the jQuery autocomplete source property.
 
