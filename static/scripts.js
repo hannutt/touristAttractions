@@ -133,5 +133,20 @@ function runSpeechRecog() {
     recognization.start();
 }
 
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(success, error);
+    }
+    else {
+        alert("Geolocation is not supported by this browser.")
+    }
+}
 
+function success(position) {
+    document.getElementById("streetAddress").value = position.coords.latitude + "," + position.coords.longitude;
 
+}
+
+function error() {
+    document.getElementById("streetAddress").value = "Position not available"
+}

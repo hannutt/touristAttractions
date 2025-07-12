@@ -5,7 +5,13 @@ ABOUT THE APPLICATION
 
 The backend is made with the Python Flask framework and the cloud-based MongoBD NoSQL database. The frontend is made with HTML, Bootstrap 5, Vanilla JavaScript, and jQuery.
 
-The main idea of ​​the application is to provide information about tourist destinations in different cities in Finland. The coordinates and names of the travel destinations are stored in a NoSQL database, and when the data is retrieved, the application calculates the distance between the user's location and the destination. The calculation is done using Python's Geopy.geocoders, Nominatim and Haversine libraries.
+The main idea of the application is to provide information about tourist destinations in different cities in Finland. The coordinates and names of the travel destinations are stored in a NoSQL database, and when the data is retrieved, the application calculates the distance between the user's location and the destination and displays the result in kilometers. The calculation is done using Python's Geopy.geocoders, Nominatim and Haversine libraries.
+
+ENTERING THE USER'S LOCATION
+
+There are two ways a user can provide their location. In both cases, the first step is to select a city from the HTML selector. The user can then type a street address into the HTML input field or click the "User's current location" checkbox. Using the current location calls a JavaScript function that executes the HTML Geolocation API to determine the current latitude and longitude coordinates of the user's device.
+
+Finally, the user's location information is sent as parameters to the Geolocator Geocode method, which calculates the distance information.
 
 AUTOCOMPLETE TEXT
 

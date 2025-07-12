@@ -24,15 +24,19 @@ def start():
 
 @app.route("/showAttractions", methods=['POST','GET'])
 def showAttractions():
-    
+    #haetaan currentLoc nimisen checkboxin:n value attribuuttu
+    currentcb=request.form.get('currentLoc')
+    print("currrent",currentcb)
     #käyttäjän valitsema kaupunki
     city=request.form['cities']
     city=city.lower()
+   
     destination=request.form['destination']
   
   
     #käyttäjän syöte
     street=request.form['streetAddress']
+    currentCoordinates=street.split(",")
     fullAddress=city+","+street
     mClient=connectDB()
     dataBaseName=mClient['touristDB']
@@ -45,8 +49,15 @@ def showAttractions():
     attractionImageUrl=collection.distinct('attractImage',{'attractName':destination})
     attractionName=collection.distinct('attractName',{"attractName":destination})
     geolocator = Nominatim(user_agent="GetLoc")
-    #paikannetaan käyttäjä, fullAdress on kaupunki + syötetty osoite
-    location = geolocator.geocode(fullAddress)
+    #jos User current position checkboxia on klikattu
+    if currentcb=="currentLocation":
+        geoLoc = Nominatim(user_agent="GetLoc")
+        #reverse, eli sijainti annetaan osoitteen sijaan lat/lon koordinaatteina
+        locname = geoLoc.reverse(currentCoordinates)
+        location=geolocator.geocode(locname)
+    else:
+        #sijainti annetaan kaupunki+katunimi muodossa
+        location = geolocator.geocode(fullAddress)
     myLat=location.latitude
     myLong=location.longitude
     myLocation=(myLat,myLong)
@@ -75,6 +86,9 @@ def showAttractions():
     
     return render_template('index.html',distance=distance,street=street,estTravelTimeWalk=estTravelTimeWalk,estTravelTimeBike=estTravelTimeBike,latFloat=latFloat,longFloat=longFloat,imgUrl=imgUrl,attractionName=attractionName,
                            myLat=myLat,myLong=myLong)
+
+
+
 
 
 if __name__ == '__main__':

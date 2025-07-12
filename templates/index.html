@@ -27,18 +27,20 @@
 <body>
     <section class="gradient-background">
         <div class="px-4 py-5 my-5 text-center">
-            <img class="d-block mx-auto mb-4" src="/static/images/tour-guide128px.png" alt="" width="72" height="57">
+            <img class="d-block mx-auto mb-4" src="/static/images/tour-guide128px.png" alt="app logo" width="72" height="57">
 
             <h1 class="display-5 fw-bold">Tourist Attractions</h1>
             <div class="col-lg-6 mx-auto">
 
                 <div class="lead mb-4">
+                    
+                    <form action="{{ url_for('showAttractions')}}" method="post">
                     <label class="form-check-label" for="currentLoc">Use current location</label>
-                    <input class="form-check-input" type="checkbox" value="" id="currentLoc">
+                    <input class="form-check-input" type="checkbox" value="currentLocation" id="currentLoc" name="currentLoc" onclick="getLocation()">
                 </div>
 
                 <div class="lead mb-4">
-                    <form action="{{ url_for('showAttractions')}}" method="post">
+                    
                         <div id="inputDiv" hidden>
                             <!--div tässä asettaa inputit allekkain-->
                             <div>
