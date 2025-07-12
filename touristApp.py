@@ -16,6 +16,29 @@ def connectDB():
     client = MongoClient(uri, server_api=ServerApi('1'))
     return client
 
+def doCalculations(distance):
+        #kävelyaika kun nopeus on 5 km/h / matkalla
+        walktime=distance/5
+        #pyöräilyaika kun nopeus on 15/kmh
+        biketime=distance/15
+        hours = int(walktime)
+        minutes = (walktime*60) % 60
+        seconds = (walktime*3600) % 60
+        estTravelTimeWalk="%d:%02d.%02d" % (hours, minutes, seconds)
+        hours = int(biketime)
+        minutes = (biketime*60) % 60
+        seconds = (biketime*3600) % 60
+        #muunnetaan distance/5 tulos tunneiksi,minuuteiksi jasekunneiksi
+        estTravelTimeBike="%d:%02d.%02d" % (hours, minutes, seconds)
+        return estTravelTimeBike,estTravelTimeWalk
+
+def useCurrentCoordinates(currentCoordinates):
+        geoLoc = Nominatim(user_agent="GetLoc")
+        #reverse, eli sijainti annetaan osoitteen sijaan lat/lon koordinaatteina
+        locname = geoLoc.reverse(currentCoordinates)
+        location=geoLoc.geocode(locname)
+        return location
+     
 
 @app.route('/')
 def start():
@@ -26,14 +49,10 @@ def start():
 def showAttractions():
     #haetaan currentLoc nimisen checkboxin:n value attribuuttu
     currentcb=request.form.get('currentLoc')
-    print("currrent",currentcb)
     #käyttäjän valitsema kaupunki
     city=request.form['cities']
     city=city.lower()
-   
     destination=request.form['destination']
-  
-  
     #käyttäjän syöte
     street=request.form['streetAddress']
     currentCoordinates=street.split(",")
@@ -43,7 +62,7 @@ def showAttractions():
     collection=dataBaseName[city]
     #disticnt metodilla haetaan vain kentän nimen jälkeinen arvo, jossa attract name on mannerheim statue
     #vrt sql where
-  
+    
     destinationLatitude=collection.distinct('attractLat',{"attractName":destination})
     destinationLongitude=collection.distinct('attractLon',{"attractName":destination})
     attractionImageUrl=collection.distinct('attractImage',{'attractName':destination})
@@ -51,10 +70,8 @@ def showAttractions():
     geolocator = Nominatim(user_agent="GetLoc")
     #jos User current position checkboxia on klikattu
     if currentcb=="currentLocation":
-        geoLoc = Nominatim(user_agent="GetLoc")
-        #reverse, eli sijainti annetaan osoitteen sijaan lat/lon koordinaatteina
-        locname = geoLoc.reverse(currentCoordinates)
-        location=geolocator.geocode(locname)
+        location=useCurrentCoordinates(currentCoordinates)
+       
     else:
         #sijainti annetaan kaupunki+katunimi muodossa
         location = geolocator.geocode(fullAddress)
@@ -69,25 +86,15 @@ def showAttractions():
     #lasketaan etäisyys käyttäjän antaman kaupungin ja kadun + nähtävyyden välillä
     distance=haversine(myLocation,attractionLocation)
     distance=round(distance,2)
-    #aika-arvio kävellen
+    #funktio palauttaa result tuplen, joist ensimmäinen on aik-arvio kävellen ja toinen pyörällä.
+    result=doCalculations(distance)
+    walkTime=result[0]
+    bikeTime=result[1]  
+    
+    return render_template('index.html',distance=distance,street=street,latFloat=latFloat,longFloat=longFloat,imgUrl=imgUrl,attractionName=attractionName,
+                           myLat=myLat,myLong=myLong,walkTime=walkTime,bikeTime=bikeTime)
+
    
-    walktime=distance/5
-    biketime=distance/15
-    
-#muunnetaan distance/5 tulos tunneiksi,minuuteiksi ja sekunneiksi
-    hours = int(walktime)
-    minutes = (walktime*60) % 60
-    seconds = (walktime*3600) % 60
-    estTravelTimeWalk="%d:%02d.%02d" % (hours, minutes, seconds)
-    hours = int(biketime)
-    minutes = (biketime*60) % 60
-    seconds = (biketime*3600) % 60
-    estTravelTimeBike="%d:%02d.%02d" % (hours, minutes, seconds)
-    
-    return render_template('index.html',distance=distance,street=street,estTravelTimeWalk=estTravelTimeWalk,estTravelTimeBike=estTravelTimeBike,latFloat=latFloat,longFloat=longFloat,imgUrl=imgUrl,attractionName=attractionName,
-                           myLat=myLat,myLong=myLong)
-
-
 
 
 
