@@ -42,58 +42,65 @@ def useCurrentCoordinates(currentCoordinates):
 
 @app.route('/')
 def start():
-     cities=['Helsinki','Tampere','Vaasa','Oulu']
-     return render_template('index.html',cities=cities)
+     cityNcoord={"Helsinki":'60.192059,24.945831',"Tampere":"61.49911,23.78712","Vaasa":"63.096,21.61577"}
+     citiesList=['Helsinki','Tampere','Vaasa','Oulu']
+     return render_template('index.html',cityNcoord=cityNcoord)
 
 @app.route("/showAttractions", methods=['POST','GET'])
 def showAttractions():
-    #haetaan currentLoc nimisen checkboxin:n value attribuuttu
-    currentcb=request.form.get('currentLoc')
-    #käyttäjän valitsema kaupunki
-    city=request.form['cities']
-    city=city.lower()
-    destination=request.form['destination']
-    #käyttäjän syöte
-    street=request.form['streetAddress']
-    currentCoordinates=street.split(",")
-    fullAddress=city+","+street
-    mClient=connectDB()
-    dataBaseName=mClient['touristDB']
-    collection=dataBaseName[city]
+    try:
+         
+        #haetaan currentLoc nimisen checkboxin:n value attribuuttu
+        currentcb=request.form.get('currentLoc')
+        #käyttäjän valitsema kaupunki
+        city=request.form['cities']
+        city=city.lower()
+        print("city ",city)
+        destination=request.form['destination']
+        #käyttäjän syöte
+        street=request.form['streetAddress']
+        currentCoordinates=street.split(",")
+        fullAddress=city+","+street
+        mClient=connectDB()
+        dataBaseName=mClient['touristDB']
+        collection=dataBaseName[city]
     #disticnt metodilla haetaan vain kentän nimen jälkeinen arvo, jossa attract name on mannerheim statue
     #vrt sql where
     
-    destinationLatitude=collection.distinct('attractLat',{"attractName":destination})
-    destinationLongitude=collection.distinct('attractLon',{"attractName":destination})
-    attractionImageUrl=collection.distinct('attractImage',{'attractName':destination})
-    attractionName=collection.distinct('attractName',{"attractName":destination})
-    geolocator = Nominatim(user_agent="GetLoc")
+        destinationLatitude=collection.distinct('attractLat',{"attractName":destination})
+        destinationLongitude=collection.distinct('attractLon',{"attractName":destination})
+        attractionImageUrl=collection.distinct('attractImage',{'attractName':destination})
+        attractionName=collection.distinct('attractName',{"attractName":destination})
+        geolocator = Nominatim(user_agent="GetLoc")
     #jos User current position checkboxia on klikattu
-    if currentcb=="currentLocation":
-        location=useCurrentCoordinates(currentCoordinates)
+        if currentcb=="currentLocation":
+            location=useCurrentCoordinates(currentCoordinates)
        
-    else:
+        else:
         #sijainti annetaan kaupunki+katunimi muodossa
-        location = geolocator.geocode(fullAddress)
-    myLat=location.latitude
-    myLong=location.longitude
-    myLocation=(myLat,myLong)
-    latFloat=float(destinationLatitude[0])
-    longFloat=float(destinationLongitude[0])
-    imgUrl=attractionImageUrl[0]
+            location = geolocator.geocode(fullAddress)
+        myLat=location.latitude
+        myLong=location.longitude
+        myLocation=(myLat,myLong)
+        latFloat=float(destinationLatitude[0])
+        longFloat=float(destinationLongitude[0])
+        imgUrl=attractionImageUrl[0]
    
-    attractionLocation=(latFloat,longFloat)
+        attractionLocation=(latFloat,longFloat)
     #lasketaan etäisyys käyttäjän antaman kaupungin ja kadun + nähtävyyden välillä
-    distance=haversine(myLocation,attractionLocation)
-    distance=round(distance,2)
+        distance=haversine(myLocation,attractionLocation)
+        distance=round(distance,2)
     #funktio palauttaa result tuplen, joist ensimmäinen on aik-arvio kävellen ja toinen pyörällä.
-    result=doCalculations(distance)
-    walkTime=result[0]
-    bikeTime=result[1]  
+        result=doCalculations(distance)
+        walkTime=result[0]
+        bikeTime=result[1]  
     
-    return render_template('index.html',distance=distance,street=street,latFloat=latFloat,longFloat=longFloat,imgUrl=imgUrl,attractionName=attractionName,
+        return render_template('index.html',distance=distance,street=street,latFloat=latFloat,longFloat=longFloat,imgUrl=imgUrl,attractionName=attractionName,
                            myLat=myLat,myLong=myLong,walkTime=walkTime,bikeTime=bikeTime)
-
+    #jos jokin suluissa olevista virheistä toteutuu, näytetään error.html
+    except (IndexError,ValueError) as e:
+         
+         return render_template("error.html")
    
 
 

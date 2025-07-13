@@ -2,9 +2,11 @@
 function citySelect(sel) {
     // output on globaali muuttuja, koska siitä puuttuu var
     output = document.getElementById("cities").value = sel.options[sel.selectedIndex].text
+    //coordinates=output.value
+    //coordinates =document.getElementById("cities").value=sel.options[sel.selectedIndex].value
     if (output != "Select city") {
         document.getElementById("inputDiv").hidden = false
-        document.getElementById("autoCompleteCB").hidden = false
+        document.getElementById("forms").hidden = false
 
 
 
@@ -12,7 +14,7 @@ function citySelect(sel) {
     }
     if (output === "Select city") {
         document.getElementById("inputDiv").hidden = true
-        document.getElementById("autoCompleteCB").hidden = true
+        document.getElementById("forms").hidden = true
 
     }
 }
